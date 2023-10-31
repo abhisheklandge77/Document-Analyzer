@@ -73,3 +73,23 @@ export const updateUser = async (payload) => {
       console.log("Error::::", error);
     });
 };
+
+export const parseFileContent = async (formData) => {
+  return axios
+    .post(`${API_BASE_URL}/parse-pdf`, formData)
+    .then((res) => res.data)
+    .catch((error) => {
+      console.log("Error::::", error);
+    });
+};
+
+export const saveDocument = async (payload) => {
+  return axios
+    .post(`${API_BASE_URL}/save-document`, {
+      ...payload,
+    })
+    .then((res) => res.data)
+    .catch((error) => {
+      console.log("Error::::", error);
+    });
+};

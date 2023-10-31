@@ -1,0 +1,26 @@
+.document-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .document-form-container {
+    width: 40%;
+    padding: 2rem;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+
+    .input-field {
+      margin: 1.5rem 0;
+    }
+  }
+
+  .doc-btn {
+    background-color: #c70039;
+    margin-bottom: 2rem;
+
+    &:hover {
+      background-color: #c70039;
+    }
+  }
+}
