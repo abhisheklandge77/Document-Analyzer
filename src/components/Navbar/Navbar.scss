@@ -1,0 +1,32 @@
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  color: #fff;
+  background-color: #12121a;
+  border-bottom: 1px solid #292929;
+}
+
+.logo {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  h2 {
+    margin: 0;
+    margin-left: 0.6rem;
+
+    span {
+      color: #c70039;
+      font-weight: bold;
+      margin-left: 0.3rem;
+    }
+  }
+}
+
+.account-settings {
+  display: flex;
+  align-items: center;
+}

@@ -1,0 +1,52 @@
+.login-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 3rem;
+  background-color: #f8f8f8;
+
+  .form-container {
+    width: 60%;
+    text-align: center;
+    padding: 6rem 0;
+
+    .login-form {
+      margin: 2rem auto;
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      .input-field {
+        margin-bottom: 0.7rem;
+      }
+      .email-input-field {
+        margin-bottom: 1.5rem;
+      }
+      .login-btn {
+        background-color: #c70039;
+        margin-bottom: 2rem;
+      }
+      .link {
+        color: gray;
+      }
+
+      .login-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+  .image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 5rem;
+    width: 40%;
+
+    img {
+      width: 80%;
+      height: 80%;
+    }
+  }
+}
