@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:5050";
+// const API_BASE_URL = "http://localhost:5050";
+const API_BASE_URL = "https://document-analyzer-server.onrender.com";
 
 export const registerUser = async (payload) => {
   return axios
