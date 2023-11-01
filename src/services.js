@@ -93,3 +93,14 @@ export const saveDocument = async (payload) => {
       console.log("Error::::", error);
     });
 };
+
+export const deleteDocument = async (payload) => {
+  return axios
+    .post(`${API_BASE_URL}/delete-document`, {
+      ...payload,
+    })
+    .then((res) => res.data)
+    .catch((error) => {
+      console.log("Error::::", error);
+    });
+};

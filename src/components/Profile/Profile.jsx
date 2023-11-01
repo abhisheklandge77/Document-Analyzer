@@ -4,9 +4,14 @@ import { Person, OpenWith, Delete } from "@mui/icons-material";
 import nodocumentsFoundImg from "../../assets/no-documents.svg";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import DocumentInfoModal from "../DocumentInfoModal/DocumentInfoModal";
+import { deleteDocument } from "../../services";
 
 function Profile({ setShowLoader }) {
   const [userData, setUserData] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [document, setDocument] = useState(null);
+
   const navigate = useNavigate();
   console.log("UserData:::", userData);
 
@@ -17,77 +22,41 @@ function Profile({ setShowLoader }) {
     }
   }, [localStorage.getItem("userDetails")]);
 
-  const handleDeleteBtnClick = async (document) => {
+  const handleDeleteBtnClick = async (documentObj) => {
     if (
       !confirm(
-        `Are you sure you want to delete document '${document?.documentName}'?`
+        `Are you sure you want to delete document '${documentObj?.documentName}'?`
       )
     ) {
       return;
-    } else {
+    }
+
+    try {
       setShowLoader(true);
-      const url = "/delete-document";
-      await axios
-        .post(url, {
-          userId: userData?._id,
-          document,
-        })
-        .then((res) => {
-          if (res) {
-            setShowLoader(false);
-            alert(`document '${document.documentName}' Deleted Successfully`);
-            validateUser();
-            const documentId = JSON.parse(
-              localStorage.getItem("devcode-documentId")
-            );
-            if (documentId === document._id) {
-              setHtmlCode("");
-              setCssCode("");
-              setJsCode("");
-              setdocumentId("");
-              setdocumentName("Untitled");
-            }
-          }
-        })
-        .catch((error) => {
-          setShowLoader(false);
-          alert(
-            error.response.data.error ||
-              `Failed to delete document '${document.documentName}' !`
-          );
-          console.log("Error::::", error);
-        });
+      const payload = {
+        userId: userData?._id,
+        document: documentObj,
+      };
+      const response = await deleteDocument(payload);
+      console.log("save Doc:::", response);
+      if (response?.data) {
+        localStorage.setItem("userDetails", JSON.stringify(response?.data));
+        alert("Document Deleted Successfully");
+        setShowLoader(false);
+      } else {
+        alert(response?.error);
+      }
+    } catch (err) {
+      console.log("Error: ", err);
+      alert("Failed to delete document !");
+      setShowLoader(false);
     }
   };
 
-  // const handleOpendocumentbtnClick = async (document) => {
-  //   if (htmlCode || cssCode || jsCode) {
-  //     setShowLoader(true);
-  //     const url = "/save-document";
-  //     await axios
-  //       .post(url, {
-  //         id: userData._id,
-  //         documentName: documentName || "Untitled",
-  //         htmlCode,
-  //         cssCode,
-  //         jsCode,
-  //         documentId,
-  //       })
-  //       .then((res) => {
-  //         if (res) {
-  //           setShowLoader(false);
-  //           navigate("/code-editor");
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         setShowLoader(false);
-  //         alert(`Your current document '${documentName}' is not saved yet !`);
-  //         console.log("Error::::", error);
-  //       });
-  //   } else {
-  //     navigate("/code-editor");
-  //   }
-  // };
+  const handleOpenDocumentbtnClick = async (documentObj) => {
+    setShowModal(true);
+    setDocument(documentObj);
+  };
 
   return (
     <div className="profile-container">
@@ -115,22 +84,22 @@ function Profile({ setShowLoader }) {
         <h2 className="my-documents-header">My Documents</h2>
         <div className="documents-container">
           {userData?.documents?.length ? (
-            userData?.documents.map((document) => {
+            userData?.documents.map((documentObj) => {
               return (
-                <div className="document-card" key={document._id}>
+                <div className="document-card" key={documentObj._id}>
                   <div className="document-image">
                     <OpenWith
                       className="expand-icon"
                       titleAccess="Open document"
-                      // onClick={() => handleOpendocumentbtnClick(document)}
+                      onClick={() => handleOpenDocumentbtnClick(documentObj)}
                     />
                   </div>
                   <div className="document-info">
-                    <p className="document-name">{document.documentName}</p>
+                    <p className="document-name">{documentObj.documentName}</p>
                     <Delete
                       className="delete-icon"
                       titleAccess="Delete document"
-                      onClick={() => handleDeleteBtnClick(document)}
+                      onClick={() => handleDeleteBtnClick(documentObj)}
                     />
                   </div>
                 </div>
@@ -144,6 +113,11 @@ function Profile({ setShowLoader }) {
           )}
         </div>
       </div>
+      <DocumentInfoModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        document={document}
+      />
     </div>
   );
 }

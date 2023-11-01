@@ -58,20 +58,20 @@
   align-items: center;
   flex-wrap: wrap;
 }
-.project-card {
+.document-card {
   background-color: #282c34;
   padding: 1rem;
   border-radius: 8px;
   border: 1px solid #c70039;
   margin-bottom: 2rem;
 }
-.project-image {
+.document-image {
   width: 300px;
   height: 160px;
   margin-bottom: 1.2rem;
   background-color: #373b44;
   border-radius: 8px;
-  background-image: url(../../assets/devcode-website-icon.png);
+  background-image: url(../../assets/document-icon.png);
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
@@ -88,14 +88,14 @@
   right: 0.6rem;
   cursor: pointer;
 }
-.project-info {
+.document-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   color: #fff;
 }
-.project-name {
+.document-name {
   width: 70%;
   margin: 0;
   font-weight: 700;

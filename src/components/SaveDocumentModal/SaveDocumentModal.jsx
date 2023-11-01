@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import "./SaveDocumentModal.scss";
-import { Button, Modal, TextField } from "@mui/material";
+import { Autocomplete, Button, Chip, Modal, TextField } from "@mui/material";
 import { saveDocument } from "../../services";
 
-function SaveDocumentModal({ setShowModal, showModal, documentId, keywords }) {
+function SaveDocumentModal({ setShowModal, showModal, documentId }) {
   const [documentName, setDocumentName] = useState("");
+  const [keywordsList, setKeywordsList] = useState([]);
 
   const customStyle = {
     "& label.Mui-focused": {
@@ -21,7 +22,6 @@ function SaveDocumentModal({ setShowModal, showModal, documentId, keywords }) {
   };
 
   const handleSaveClick = async () => {
-    console.log("Values:::", keywords);
     try {
       if (!documentName) {
         alert("Please Enter Document Name !");
@@ -30,8 +30,7 @@ function SaveDocumentModal({ setShowModal, showModal, documentId, keywords }) {
         const payload = {
           id: user?._id,
           documentName,
-          keywords: keywords,
-          documentId: documentId || "",
+          keywords: keywordsList,
         };
         const response = await saveDocument(payload);
         console.log("save Doc:::", response);
@@ -66,6 +65,38 @@ function SaveDocumentModal({ setShowModal, showModal, documentId, keywords }) {
           sx={customStyle}
           value={documentName}
           onChange={(e) => setDocumentName(e.target.value)}
+        />
+        <Autocomplete
+          multiple
+          key={Math.random()}
+          id="tags-filled"
+          options={keywordsList.map((option) => option)}
+          defaultValue={[...keywordsList]}
+          freeSolo
+          renderTags={(value, getTagProps) =>
+            value.map((option, index) => (
+              <Chip
+                key={`tag-${index}`}
+                variant="outlined"
+                label={option}
+                {...getTagProps({ index })}
+              />
+            ))
+          }
+          onChange={(e, value) => {
+            console.log("Value:::", value);
+            setKeywordsList(value);
+          }}
+          filterSelectedOptions
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              variant="filled"
+              label="Keywords"
+              sx={customStyle}
+              placeholder="Keywords"
+            />
+          )}
         />
         <Button
           className="doc-btn"

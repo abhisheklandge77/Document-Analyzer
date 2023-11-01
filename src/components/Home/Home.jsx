@@ -90,8 +90,12 @@ function Home({ setShowLoader }) {
   ];
 
   useEffect(() => {
-    const userDetails = JSON.parse(localStorage.getItem("userDetails")) || [];
-    setDocumentList([...documents, ...userDetails?.documents]);
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    if (userDetails?.documents?.length) {
+      setDocumentList([...documents, ...userDetails?.documents]);
+    } else {
+      setDocumentList([...documents]);
+    }
   }, [localStorage.getItem("userDetails")]);
 
   const handleAnalyzeDocumentClick = async () => {
@@ -207,7 +211,7 @@ function Home({ setShowLoader }) {
             variant="contained"
             onClick={handleSaveDocument}
           >
-            Save Document
+            Add New Document
           </Button>
         </div>
         <div className="document-analyzer">
@@ -284,20 +288,21 @@ function Home({ setShowLoader }) {
                 <hr />
 
                 <h4>Keywords Count:</h4>
-                {Object.keys(analysisResult?.wordsCountMap).map((word) => (
-                  <div className="word-count">
-                    <p>{word}</p>
-                    <Chip
-                      label={analysisResult?.wordsCountMap[word]}
-                      color={
-                        analysisResult?.wordsCountMap[word] > 0
-                          ? "success"
-                          : "error"
-                      }
-                      className="count"
-                    />
-                  </div>
-                ))}
+                {analysisResult?.wordsCountMap &&
+                  Object.keys(analysisResult?.wordsCountMap).map((word) => (
+                    <div className="word-count">
+                      <p>{word}</p>
+                      <Chip
+                        label={analysisResult?.wordsCountMap[word]}
+                        color={
+                          analysisResult?.wordsCountMap[word] > 0
+                            ? "success"
+                            : "error"
+                        }
+                        className="count"
+                      />
+                    </div>
+                  ))}
               </div>
             )}
           {analysisResult === "Error: Invalid PDF structure" && (
